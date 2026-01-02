@@ -41,7 +41,10 @@ M.on_attach = function(client, bufnr)
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			buffer = bufnr,
 			callback = function()
-				require("conform").format({ bufnr = bufnr })
+				-- Skip Go files as they're handled by go.nvim
+				if vim.bo[bufnr].filetype ~= "go" then
+					require("conform").format({ bufnr = bufnr })
+				end
 			end,
 		})
 	end
