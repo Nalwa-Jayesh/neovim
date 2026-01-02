@@ -13,6 +13,7 @@ return {
 				json = { "prettierd", "prettier" },
 				yaml = { "prettierd", "prettier" },
 				markdown = { "prettierd", "prettier" },
+				golang = { "gofumpt" },
 			},
 			format_on_save = {
 				timeout_ms = 500,
