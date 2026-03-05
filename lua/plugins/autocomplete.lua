@@ -1,36 +1,68 @@
 return {
 	"saghen/blink.cmp",
-	-- optional: provides snippets for the snippet source
 	dependencies = {
 		{
 			"L3MON4D3/LuaSnip",
-			-- follow latest release.
-			version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-			-- install jsregexp (optional!).
+			version = "v2.*",
 			build = "make install_jsregexp",
+			dependencies = {
+				"rafamadriz/friendly-snippets", -- optional but recommended snippet collection
+			},
+			config = function()
+				local luasnip = require("luasnip")
+
+				require("luasnip.loaders.from_vscode").lazy_load()
+
+				-- Optional: extend filetypes (e.g. use jsx snippets in tsx)
+				luasnip.filetype_extend("typescript", { "javascript" })
+				luasnip.filetype_extend("typescriptreact", { "javascript", "javascriptreact" })
+			end,
 		},
-		"rafamadriz/friendly-snippets",
 	},
-
 	version = "1.*",
-
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
 	opts = {
-		-- All presets have the following mappings:
-		-- C-space: Open menu or open docs if already open
-		-- C-n/C-p or Up/Down: Select next/previous item
-		-- C-e: Hide menu
-		-- C-k: Toggle signature help (if signature.enabled = true)
-		-- See :h blink-cmp-config-keymap for defining your own keymap
 		keymap = { preset = "default" },
-		snippets = { preset = "luasnip" },
+		snippets = {
+			preset = "luasnip",
+			-- Ensure blink expands and jumps via luasnip
+			expand = function(snippet)
+				require("luasnip").lsp_expand(snippet)
+			end,
+			active = function(filter)
+				if filter and filter.direction then
+					return require("luasnip").jumpable(filter.direction)
+				end
+				return require("luasnip").in_snippet()
+			end,
+			jump = function(direction)
+				require("luasnip").jump(direction)
+			end,
+		},
 		appearance = {
 			nerd_font_variant = "mono",
 		},
-		-- (Default) Only show the documentation popup when manually triggered
-		completion = { documentation = { auto_show = false } },
-
+		completion = {
+			documentation = { auto_show = true },
+			menu = {
+				draw = {
+					columns = {
+						{ "label", "label_description", gap = 1 },
+						{ "kind_icon", "kind", gap = 1 },
+					},
+					components = {
+						label_description = {
+							width = { max = 30 },
+							text = function(ctx)
+								return ctx.label_detail or ""
+							end,
+							highlight = "Comment",
+						},
+					},
+				},
+			},
+		},
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
 		},
