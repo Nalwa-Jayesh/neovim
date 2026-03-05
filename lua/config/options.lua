@@ -6,6 +6,7 @@
 -- Global Settings
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.g.python3_host_prog = os.getenv("HOME") .. ".local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/bin/python3.11"
 
 -- Basic Settings
 vim.opt.number = true -- Line numbers
