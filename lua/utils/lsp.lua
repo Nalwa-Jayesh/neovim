@@ -16,6 +16,10 @@ M.on_attach = function(client, bufnr)
 	local opts = { buffer = bufnr, silent = true }
 	local builtin = require("telescope.builtin")
 
+	if client.server_capabilities.documentSymbolProvider then
+		local navic = require("nvim-navic")
+		navic.attach(client, bufnr)
+	end
 	-- LSP Navigation with Telescope
 	vim.keymap.set("n", "gd", builtin.lsp_definitions, opts)
 	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
