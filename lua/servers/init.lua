@@ -7,6 +7,11 @@ require("mason-lspconfig").setup({
 		"basedpyright",
 		"ruff",
 		"stylua",
+		"templ",
+		"gopls",
+		"tailwindcss",
+		"ts_ls",
+		"astro",
 	},
 	automatic_installation = true,
 })
