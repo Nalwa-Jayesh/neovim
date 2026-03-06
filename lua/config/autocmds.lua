@@ -30,3 +30,30 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.wo.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
 	end,
 })
+
+local treegroup = vim.api.nvim_create_augroup("treesitter", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = treegroup,
+	callback = function()
+		pcall(vim.treesitter.start)
+	end,
+	desc = "Enable treesitter highlighting",
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = treegroup,
+	callback = function()
+		vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+	end,
+	desc = "Enable treesitter indentation",
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = treegroup,
+	callback = function()
+		vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+		vim.wo[0][0].foldmethod = "expr"
+	end,
+	desc = "Enable treesitter folds",
+})
