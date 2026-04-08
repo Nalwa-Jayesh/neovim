@@ -1,15 +1,16 @@
+-- lua/plugins/treesitter-textobjects.lua
 return {
-	"nvim-treesitter/nvim-treesitter-textobjects",
-	branch = "main",
-	dependencies = { "nvim-treesitter/nvim-treesitter" },
-	config = function()
+	spec = {
+		src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
+	},
+	setup = function()
 		require("nvim-treesitter-textobjects").setup({
 			select = {
 				lookahead = true,
 				selection_modes = {
 					["@parameter.outer"] = "v",
 					["@function.outer"] = "V",
-					["@class.outer"] = "<c-v>",
+					["@class.outer"] = "V",
 				},
 				include_surrounding_whitespace = false,
 			},
@@ -21,6 +22,7 @@ return {
 		local select = require("nvim-treesitter-textobjects.select")
 		local swap = require("nvim-treesitter-textobjects.swap")
 		local move = require("nvim-treesitter-textobjects.move")
+		local ts_repeat = require("nvim-treesitter-textobjects.repeatable_move")
 
 		-- Select
 		vim.keymap.set({ "x", "o" }, "af", function()
@@ -73,8 +75,7 @@ return {
 			move.goto_previous_end("@class.outer", "textobjects")
 		end, { desc = "Previous class end" })
 
-		-- Repeatable moves with ; and ,
-		local ts_repeat = require("nvim-treesitter-textobjects.repeatable_move")
+		-- Repeatable moves
 		vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat.repeat_last_move_next)
 		vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat.repeat_last_move_previous)
 		vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat.builtin_f_expr, { expr = true })

@@ -1,6 +1,15 @@
+-- lua/plugins/mini.lua
 return {
-	{ "nvim-mini/mini.statusline", version = "*", opts = { use_icons = true } },
-	{ "nvim-mini/mini.surround", version = "*", opts = {} },
-	{ "nvim-mini/mini.move", version = "*", opts = {} },
-	{ "nvim-mini/mini.notify", version = "*", opts = {} },
+    spec = {
+        { src = "https://github.com/echasnovski/mini.statusline" },
+        { src = "https://github.com/echasnovski/mini.surround" },
+        { src = "https://github.com/echasnovski/mini.move" },
+        { src = "https://github.com/echasnovski/mini.notify" },
+    },
+    setup = function()
+        require("mini.statusline").setup({ use_icons = true })
+        require("mini.surround").setup()
+        require("mini.move").setup()
+        require("mini.notify").setup()
+    end,
 }

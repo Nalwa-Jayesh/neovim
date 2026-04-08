@@ -14,6 +14,9 @@ vim.keymap.set("i", "jj", "<ESC>")
 vim.keymap.set("n", "<leader>w", "<Cmd>w<CR>")
 vim.keymap.set("n", "<leader>q", "<Cmd>q<CR>")
 vim.keymap.set("n", "<ESC>", "<Cmd>nohlsearch<CR>")
+vim.keymap.set("n", "<leader>mf", function()
+	require("utils.create_file").create_file()
+end, { desc = "Create new file" })
 
 -- Buffer navigation
 vim.keymap.set("n", "<leader>bn", "<Cmd>bnext<CR>", { desc = "Next buffer" })

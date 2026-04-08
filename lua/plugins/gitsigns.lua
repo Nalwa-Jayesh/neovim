@@ -1,6 +1,8 @@
 return {
-	"lewis6991/gitsigns.nvim",
-	config = function()
+	spec = {
+    src = "lewis6991/gitsigns.nvim",
+  },
+	setup = function()
 		require("gitsigns").setup({
 			signs = {
 				add = { text = "┃" },

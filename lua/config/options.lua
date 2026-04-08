@@ -16,6 +16,8 @@ vim.opt.scrolloff = 10 -- Keep 10 lines above/below cursor
 vim.opt.sidescrolloff = 8 -- Keep 8 columns left/right of cursor
 vim.opt.wrap = false -- Don't wrap lines
 vim.opt.cmdheight = 1 -- Command line height
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 -- Tabbing / Indentation
 vim.opt.tabstop = 2 -- Tab width

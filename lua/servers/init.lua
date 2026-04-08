@@ -2,6 +2,8 @@ require("mason").setup()
 require("mason-lspconfig").setup({
 	ensure_installed = {
 		"lua_ls",
+		"clangd",
+		"rust_analyzer",
 		"bashls",
 		"docker_language_server",
 		"basedpyright",
@@ -35,7 +37,6 @@ for _, file in ipairs(server_files) do
 		local config = vim.tbl_deep_extend("force", {
 			capabilities = capabilities,
 			on_attach = lsp_utils.on_attach,
-			handlers = lsp_utils.handlers,
 		}, server_config)
 
 		vim.lsp.config(server_name, config)

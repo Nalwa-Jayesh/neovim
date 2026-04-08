@@ -21,15 +21,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		})
 	end,
 })
--- Navic winbar
-local navic_group = vim.api.nvim_create_augroup("NavicWinbar", { clear = true })
-
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = navic_group,
-	callback = function()
-		vim.wo.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-	end,
-})
 
 local treegroup = vim.api.nvim_create_augroup("treesitter", { clear = true })
 

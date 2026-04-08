@@ -1,11 +1,11 @@
+-- plugins/telescope.lua
 return {
-	"nvim-telescope/telescope.nvim",
-	tag = "v0.2.0",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+	spec = {
+		{ src = "https://github.com/nvim-lua/plenary.nvim" },
+		{ src = "https://github.com/nvim-telescope/telescope.nvim", version = "v0.2.0" },
+		{ src = "https://github.com/nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	},
-	config = function()
+	setup = function()
 		require("telescope").setup({
 			pickers = {
 				find_files = {
@@ -16,16 +16,15 @@ return {
 				fzf = {},
 			},
 		})
-
 		require("telescope").load_extension("fzf")
 
-		vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags)
-		vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files)
+		local builtin = require("telescope.builtin")
+		vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find help tags" })
+		vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
 		vim.keymap.set("n", "<leader>en", function()
-			require("telescope.builtin").find_files({
-				cwd = vim.fn.stdpath("config"),
-			})
-		end)
+			builtin.find_files({ cwd = vim.fn.stdpath("config") })
+		end, { desc = "Find in config" })
+
 		require("config.telescope.multigrep").setup()
 	end,
 }

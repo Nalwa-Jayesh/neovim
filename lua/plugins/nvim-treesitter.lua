@@ -1,9 +1,10 @@
+-- lua/plugins/treesitter.lua
 return {
-	"nvim-treesitter/nvim-treesitter",
-	lazy = false,
-	build = ":TSUpdate",
-	config = function()
-		require("nvim-treesitter").setup({
+  spec = {
+    src="nvim-treesitter/nvim-treesitter",
+  },
+  setup = function()
+    require("nvim-treesitter").setup({
 			install_dir = vim.fn.stdpath("data") .. "/site",
 		})
 		require("nvim-treesitter").install({
@@ -26,5 +27,5 @@ return {
 			"gosum",
 			"gotmpl",
 		})
-	end,
+  end,
 }

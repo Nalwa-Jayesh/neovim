@@ -1,4 +1,6 @@
 -- servers/basedpyright.lua
+
+---@type vim.lsp.Config
 return {
 	filetypes = { "python" },
 	root_markers = {
@@ -9,6 +11,7 @@ return {
 		"Pipfile",
 		".git",
 	},
+	---@type lspconfig.settings.basedpyright
 	settings = {
 		basedpyright = {
 			analysis = {

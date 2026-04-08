@@ -1,25 +1,27 @@
 -- utils/lsp.lua
 local M = {}
 
--- LSP handlers
-M.handlers = {
-	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-		border = "rounded",
-	}),
-	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-		border = "rounded",
-	}),
-}
+-- Set borders globally via vim.lsp.config
+vim.lsp.config("*", {
+	handlers = {
+		["textDocument/hover"] = vim.lsp.handlers.hover,
+		["textDocument/signatureHelp"] = vim.lsp.handlers.signature_help,
+	},
+})
+vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+	config = vim.tbl_deep_extend("force", config or {}, { border = "rounded" })
+	vim.lsp.handlers.hover(err, result, ctx, config)
+end
+vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
+	config = vim.tbl_deep_extend("force", config or {}, { border = "rounded" })
+	vim.lsp.handlers.signature_help(err, result, ctx, config)
+end
 
 -- LSP on_attach function
 M.on_attach = function(client, bufnr)
 	local opts = { buffer = bufnr, silent = true }
 	local builtin = require("telescope.builtin")
 
-	if client.server_capabilities.documentSymbolProvider then
-		local navic = require("nvim-navic")
-		navic.attach(client, bufnr)
-	end
 	-- LSP Navigation with Telescope
 	vim.keymap.set("n", "gd", builtin.lsp_definitions, opts)
 	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
@@ -41,11 +43,10 @@ M.on_attach = function(client, bufnr)
 	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 
 	-- Format on save with conform
-	if client.supports_method("textDocument/formatting") then
+	if client:supports_method("textDocument/formatting") then
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			buffer = bufnr,
 			callback = function()
-				-- Skip Go files as they're handled by go.nvim
 				if vim.bo[bufnr].filetype ~= "go" then
 					require("conform").format({ bufnr = bufnr })
 				end
@@ -54,7 +55,7 @@ M.on_attach = function(client, bufnr)
 	end
 
 	-- Document highlighting
-	if client.supports_method("textDocument/documentHighlight") then
+	if client:supports_method("textDocument/documentHighlight") then
 		local group = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
 		vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 			buffer = bufnr,
