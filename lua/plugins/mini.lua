@@ -1,5 +1,5 @@
 return {
-	{
+	--[[{
 		"nvim-mini/mini.statusline",
 		version = "*",
 		opts = {
@@ -21,6 +21,59 @@ return {
 						{ hl = mode_hl, strings = { location } },
 					})
 				end,
+			},
+		},
+	},]]
+	{
+		"nvim-lualine/lualine.nvim",
+		event = "VeryLazy",
+		opts = {
+			options = {
+				theme = "auto",
+				globalstatus = true,
+				icons_enabled = true,
+				component_separators = "",
+				section_separators = "",
+			},
+
+			sections = {
+				lualine_a = {
+					{
+						"mode",
+						separator = "",
+					},
+				},
+
+				lualine_b = {
+					{
+						"branch",
+						icon = "",
+						separator = "",
+					},
+					{
+						"diagnostics",
+						separator = "",
+					},
+				},
+
+				lualine_c = {
+					{
+						"filename",
+						path = 0,
+						separator = "",
+					},
+				},
+
+				lualine_x = {},
+
+				lualine_y = {},
+
+				lualine_z = {
+					{
+						"location",
+						separator = "",
+					},
+				},
 			},
 		},
 	},
